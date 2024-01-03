@@ -1,0 +1,201 @@
+{% extends 'catalogue/base.html' %}
+{% block content %}
+<div class="row justify-content-center pt-4">
+	<div class="col-md-8">
+		<div class="card card-body">
+			<form method="get">
+				<div class="form-row">
+					<div class="form-group col-md-12 text-center">
+						<label for="contentContains">Contents contains</label>
+						<input type="text" class="form-control" id="contentContains" placeholder="" name="contentContains">
+					</div>
+				</div>
+				<div class="form-row justify-content-center pt-4">
+					<div class="form-group col-md-4">
+						<label for="inputState">Category (Ctrl for multi)</label>
+						<select id="inputState" class="form-control" name="category" multiple>
+							<option selected></option>
+							{% for c in categories%}
+							{% if c.name != '' %}
+							<option>{{ c.name }}</option>
+							{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+
+<!--					<div class="form-group col-md-4">-->
+<!--						<label for="categoryContains">Contents contains</label>-->
+<!--						<input type="text" class="form-control" id="categoryContains" placeholder="" name="categoryContains">-->
+<!--					</div>-->
+<!--					<div class="form-group col-md-2">-->
+<!--						{% for c in categories %}-->
+<!--						<div class="custom-control custom-radio">-->
+<!--							<input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">-->
+<!--							<label class="custom-control-label" for="customRadio1">{{ c.name }}</label>-->
+<!--						</div>-->
+<!--						{% endfor %}-->
+<!--					</div>-->
+
+
+<!--					<div class="form-group col-md-2">-->
+<!--						<label for="inputState">Box</label>-->
+<!--						<select id="inputState" class="form-control" name="box">-->
+<!--							<option selected></option>-->
+<!--							<option></option>-->
+<!--						</select>-->
+<!--					</div>-->
+					<div class="col-md-2 text-center align-self-center pt-3">
+						<button type="submit" class="btn btn-primary">Search</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<br>
+
+<div class="row">
+	<div class="col-md-8 mx-auto">
+    <div class="card">
+        <div class="card-body">
+          <p class="card-text d-flex justify-content-center">{{items_count}} items were found, page {{page_num}} (10 per page)</p>
+			<ul class="pagination justify-content-center">
+				{% if page.has_previous %}
+				<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.previous_page_number}}&{{path}}">Previous</a></li>
+				{% endif %}
+				{% if page.has_next %}
+				<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.next_page_number}}&{{path}}">Next</a></li>
+				{% endif %}
+			</ul>
+		</div>
+      </div>
+	</div>
+</div>
+<br>
+
+
+
+
+{% for a, b in items %}
+
+			<div class="row justify-content-center">
+				<div class="col-md-4">
+					<div class="card">
+						<h5 class="card-header">{{ a.id }}</h5>
+						<div class="card-body">
+							<p class="card-text">Category :{% for c in a.category.all %}
+															{{ c.name }}
+															{% endfor %}</p>
+							<p class="card-text">Contents : {{ a.contents }}</p>
+							<p class="card-text">Folder : {{ a.folder }}</p>
+							<p class="card-text">Box : {{ a.box.name}}</p>
+							<p class="card-text">Start year : {{ a.start_year }}</p>
+							<p class="card-text">End year : {{ a.end_year }}</p>
+							<p class="card-text">Last moved : {{ a.last_moved }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card">
+						<h5 class="card-header">{{ b.id }}</h5>
+						<div class="card-body">
+							<p class="card-text">Category : {% for c in b.category.all %}
+															{{ c.name }}
+															{% endfor %}</p>
+							<p class="card-text">Contents : {{ b.contents }}</p>
+							<p class="card-text">Folder : {{ b.folder }}</p>
+							<p class="card-text">Box : {{ b.box.name}}</p>
+							<p class="card-text">Start year : {{ b.start_year }}</p>
+							<p class="card-text">End year : {{ b.end_year }}</p>
+							<p class="card-text">Last moved : {{ b.last_moved }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+<br>
+{% endfor %}
+
+{% if last_item_if_odd %}
+<div class="row justify-content-center">
+				<div class="col-md-4">
+					<div class="card">
+						<h5 class="card-header">{{ last_item_if_odd.id }}</h5>
+						<div class="card-body">
+							<p class="card-text">Category : {% for c in last_item_if_odd.category.all %}
+															{{ c.name }}
+															{% endfor %}</p>
+							<p class="card-text">Contents : {{ last_item_if_odd.contents }}</p>
+							<p class="card-text">Folder : {{ last_item_if_odd.folder }}</p>
+							<p class="card-text">Box : {{ last_item_if_odd.box.name}}</p>
+							<p class="card-text">Start year : {{ last_item_if_odd.start_year }}</p>
+							<p class="card-text">End year : {{ last_item_if_odd.end_year }}</p>
+							<p class="card-text">Last moved : {{ last_item_if_odd.last_moved }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+				</div>
+</div>
+{% endif %}
+<!-- {% for item in items %}
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+        <thead>
+  				<tr>
+            <th>Category</th>
+  					<th>Contents</th>
+  					<th>Folder</th>
+  					<th>Box</th>
+  					<th>Start</th>
+  					<th>End</th>
+            <th>Moved</th>
+  				</tr>
+        </thead>
+        <tbody>
+          <tr>
+             <td>{{ item.categorys.values }}</td>
+             <td>{{ item.contents }}</td>
+             <td>{{ item.folder }}</td>
+             <td>{{ item.box.name}}</td>
+             <td>{{ item.start_year }}</td>
+             <td>{{ item.end_year }}</td>
+             <td>{{ item.last_moved }}</td>
+           </tr>
+         </tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endfor %} -->
+
+<!-- {% for item in items %}
+  <h2 class="section-heading">{{ item.id }}</h2>
+  <p>Category : {{ item.categorys.values }}</p>
+  <p>Contents : {{ item.contents }}</p>
+  <p>Folder : {{ item.folder }}</p>
+  <p>Box : {{ item.box.name}}</p>
+  <p>Start year : {{ item.start_year }}</p>
+  <p>End year : {{ item.end_year }}</p>
+  <p>Last moved : {{ item.last_moved }}</p>
+{% endfor %} -->
+
+
+<br>
+<ul class="pagination justify-content-center">
+	{% if page.has_previous %}
+	<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.previous_page_number}}&{{path}}">Previous</a></li>
+	{% endif %}
+	{% if page.has_next %}
+	<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.next_page_number}}&{{path}}">Next</a></li>
+	{% endif %}
+</ul>
+
+
+
+
+{% endblock content%}

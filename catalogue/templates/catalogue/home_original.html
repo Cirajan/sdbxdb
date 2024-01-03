@@ -1,0 +1,139 @@
+{% extends 'catalogue/base.html' %}
+{% block content %}
+
+<br>
+<div class="row justify-content-center">
+	<div class="col-md-8 mx-auto">
+		<div class="card text-center card-body">
+			<form method="get" >
+				{{itemfilter.form.as_p}}
+
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md-8 mx-auto">
+    <div class="card">
+        <div class="card-body">
+          <p class="card-text d-flex justify-content-center">{{items_count}} items were found, page {{page_num}} (10 per page)</p>
+			<ul class="pagination justify-content-center">
+				{% if page.has_previous %}
+				<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.previous_page_number}}&{{path}}">Previous</a></li>
+				{% endif %}
+				{% if page.has_next %}
+				<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.next_page_number}}&{{path}}">Next</a></li>
+				{% endif %}
+			</ul>
+		</div>
+      </div>
+	</div>
+</div>
+<br>
+
+
+
+
+{% for a, b in items %}
+	{% if forloop.counter|divisibleby:2 %}
+		{% else %}
+
+			<div class="row justify-content-center">
+				<div class="col-md-4">
+					<div class="card">
+						<h5 class="card-header">{{ a.id }}</h5>
+						<div class="card-body">
+							<p class="card-text">Category : {{ a.category }}</p>
+							<p class="card-text">Contents : {{ a.contents }}</p>
+							<p class="card-text">Folder : {{ a.folder }}</p>
+							<p class="card-text">Box : {{ a.box.name}}</p>
+							<p class="card-text">Start year : {{ a.start_year }}</p>
+							<p class="card-text">End year : {{ a.end_year }}</p>
+							<p class="card-text">Last moved : {{ a.last_moved }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card">
+						<h5 class="card-header">{{ b.id }}</h5>
+						<div class="card-body">
+							<p class="card-text">Category : {{ b.category }}</p>
+							<p class="card-text">Contents : {{ b.contents }}</p>
+							<p class="card-text">Folder : {{ b.folder }}</p>
+							<p class="card-text">Box : {{ b.box.name}}</p>
+							<p class="card-text">Start year : {{ b.start_year }}</p>
+							<p class="card-text">End year : {{ b.end_year }}</p>
+							<p class="card-text">Last moved : {{ b.last_moved }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+<br>
+{% endfor %}
+
+
+
+<!-- {% for item in items %}
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+        <thead>
+  				<tr>
+            <th>Category</th>
+  					<th>Contents</th>
+  					<th>Folder</th>
+  					<th>Box</th>
+  					<th>Start</th>
+  					<th>End</th>
+            <th>Moved</th>
+  				</tr>
+        </thead>
+        <tbody>
+          <tr>
+             <td>{{ item.categorys.values }}</td>
+             <td>{{ item.contents }}</td>
+             <td>{{ item.folder }}</td>
+             <td>{{ item.box.name}}</td>
+             <td>{{ item.start_year }}</td>
+             <td>{{ item.end_year }}</td>
+             <td>{{ item.last_moved }}</td>
+           </tr>
+         </tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endfor %} -->
+
+<!-- {% for item in items %}
+  <h2 class="section-heading">{{ item.id }}</h2>
+  <p>Category : {{ item.categorys.values }}</p>
+  <p>Contents : {{ item.contents }}</p>
+  <p>Folder : {{ item.folder }}</p>
+  <p>Box : {{ item.box.name}}</p>
+  <p>Start year : {{ item.start_year }}</p>
+  <p>End year : {{ item.end_year }}</p>
+  <p>Last moved : {{ item.last_moved }}</p>
+{% endfor %} -->
+
+
+
+<ul class="pagination justify-content-center">
+	{% if page.has_previous %}
+	<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.previous_page_number}}&{{path}}">Previous</a></li>
+	{% endif %}
+	{% if page.has_next %}
+	<li class="page-item"><a class="page-link" href="{% url 'catalogue-home' %}?page={{page.next_page_number}}&{{path}}">Next</a></li>
+	{% endif %}
+</ul>
+
+
+
+
+{% endblock content%}
